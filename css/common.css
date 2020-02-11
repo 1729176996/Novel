@@ -1,0 +1,42 @@
+[v-cloak]{
+	display: none;
+}
+
+#main{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+.flex{
+	flex: 1;
+}
+
+
+.c-blue{
+	color: #007aff;
+}
+.none{
+	display: none;
+}
+
+/**
+ * 如果页面有导航栏,一定要加上含有这个样式的div
+ */
+.header-blank{
+	width: 100%;
+	height: 44px;
+}
+
+/**
+ * 版本更新提示
+ */
+.updatedContent{
+	text-align: left;
+	margin-left: 1em;
+}
+.updatedContent2{
+	text-align: left;
+	margin-left: 2em;
+}
