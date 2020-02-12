@@ -4,6 +4,7 @@ $(function(){
 	vm = new Vue({
 	    el: "#main",
 	    data:{
+			keyword:'',
 			list:[]
 	    },
 	    mounted:function(){
@@ -12,114 +13,57 @@ $(function(){
 	    methods:{
 			init:function(){
 				var _this = this;
-				_this.list = [
-					{
-						name:'小说',func:function(){
-							window.localStorage.setItem('type','all');
-							window.location.href = 'novel.html';
-						}
-					},
-					{
-						name:'历史上的今天',func:function(){
-							window.location.href = 'historyToday.html';
-						}
-					},
-					{
-						name:'笑话',func:function(){
-							window.location.href = 'joker.html';
-						}
-					},
-					{
-						name:'新闻',func:function(){
-							window.location.href = 'news.html';
-						}
-					},
-					{
-						name:'历史上的今天',func:function(){
-							window.location.href = 'historyToday.html';
-						}
-					},
-					{
-						name:'笑话',func:function(){
-							window.location.href = 'joker.html';
-						}
-					},
-					{
-						name:'新闻',func:function(){
-							window.location.href = 'news.html';
-						}
-					},
-					{
-						name:'历史上的今天',func:function(){
-							window.location.href = 'historyToday.html';
-						}
-					},
-					{
-						name:'笑话',func:function(){
-							window.location.href = 'joker.html';
-						}
-					},
-					{
-						name:'新闻',func:function(){
-							window.location.href = 'news.html';
-						}
-					},
-					{
-						name:'历史上的今天',func:function(){
-							window.location.href = 'historyToday.html';
-						}
-					},
-					{
-						name:'笑话',func:function(){
-							window.location.href = 'joker.html';
-						}
-					},
-					{
-						name:'新闻',func:function(){
-							window.location.href = 'news.html';
-						}
-					},
-					{
-						name:'历史上的今天',func:function(){
-							window.location.href = 'historyToday.html';
-						}
-					},
-					{
-						name:'笑话',func:function(){
-							window.location.href = 'joker.html';
-						}
-					},
-					{
-						name:'新闻',func:function(){
-							window.location.href = 'news.html';
-						}
-					},
-					{
-						name:'历史上的今天',func:function(){
-							window.location.href = 'historyToday.html';
-						}
-					},
-					{
-						name:'笑话',func:function(){
-							window.location.href = 'joker.html';
-						}
-					},
-					{
-						name:'新闻',func:function(){
-							window.location.href = 'news.html';
-						}
-					},
-					{
-						name:'菜谱',func:function(){
-							window.location.href = 'recipe.html';
-						}
-					}
-				];
+				_this.list = [];
 				_this.$nextTick(function(){
 					mui('#scrollWrapper').scroll({
 						indicators:false,
 						deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
 					}).scrollTo(0,0,0);
+				})
+			},
+			search:function(){
+				var _this = this;
+				var url = 'http://www.zshu.net/search.php?choose='+_this.keyword+'&type=1';
+				loading = weui.loading("加载中");
+				$.ajax({
+					url:url,
+					type:'GET',
+					timeout:8000,
+					dataType:'json',
+					success:function(data){
+						console.log(data);
+						/*if(data){
+							if(data.code == "10000"){
+								if(data.result){
+									if(data.result.result&&data.result.result&&data.result.result.list&&data.result.result.list.length>0){
+										_this.list = data.result.result.list;
+									}
+								}else{
+									mui.alert('查询错误','提示','确定',null,'div');
+								}
+							}else{
+								mui.alert(data.msg,'提示','确定',null,'div');
+							}
+						}else{
+							mui.alert('查询错误','提示','确定',null,'div');
+						}*/
+						_this.$nextTick(function(){
+							mui('#scrollWrapper').scroll({
+								indicators:false,
+								deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+							}).scrollTo(0,0,0);
+							
+							if(loading){
+								loading.hide();
+							}
+						})
+					},
+					error:function(xhr, errorType, error,msg){
+						if(loading){
+							loading.hide();
+						}
+						mui.alert(msg,'提示','确定',null,'div');
+					}
 				})
 			},
 			toTop:function(){
