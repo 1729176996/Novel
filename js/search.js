@@ -5,7 +5,8 @@ $(function(){
 	    el: "#main",
 	    data:{
 			keyword:'',
-			list:[]
+			list:[],
+			allList:[]
 	    },
 	    mounted:function(){
 			this.init();
@@ -13,58 +14,52 @@ $(function(){
 	    methods:{
 			init:function(){
 				var _this = this;
-				_this.list = [];
-				_this.$nextTick(function(){
-					mui('#scrollWrapper').scroll({
-						indicators:false,
-						deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-					}).scrollTo(0,0,0);
-				})
-			},
-			search:function(){
-				var _this = this;
-				var url = 'http://www.zshu.net/search.php?choose='+_this.keyword+'&type=1';
+				var url = 'http://www.xbiquge.la/xiaoshuodaquan/';
 				loading = weui.loading("加载中");
 				$.ajax({
 					url:url,
 					type:'GET',
 					timeout:8000,
-					dataType:'json',
 					success:function(data){
-						console.log(data);
-						/*if(data){
-							if(data.code == "10000"){
-								if(data.result){
-									if(data.result.result&&data.result.result&&data.result.result.list&&data.result.result.list.length>0){
-										_this.list = data.result.result.list;
+						
+						var list = data.split(/<div class="novellist">([\s\S]*?)<div class="clear">/);
+						var _list = [];
+						for(key in list){
+							var typeArr = list[key].match(/<h2>([\s\S]*?)<\/h2>/);
+							var type = typeArr&&(typeArr.length==2)?typeArr[1]:'';
+							if(type){
+								var li_list = list[key].split(/<li>([\s\S]*?)<\/li>/);
+								for(k in li_list){
+									var arr = li_list[k].split(/<a href="([\s\S]*?)">([\s\S]*?)<\/a>/);
+									if(arr&&arr.length==4){
+										var o = {
+											name:arr[2],
+											href:arr[1]
+										};
+										_list.push(o)
 									}
-								}else{
-									mui.alert('查询错误','提示','确定',null,'div');
 								}
-							}else{
-								mui.alert(data.msg,'提示','确定',null,'div');
 							}
-						}else{
-							mui.alert('查询错误','提示','确定',null,'div');
-						}*/
+						}
+						_this.allList = _list;
+						_this.list = _list;
 						_this.$nextTick(function(){
+							loading.hide();
 							mui('#scrollWrapper').scroll({
 								indicators:false,
 								deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
 							}).scrollTo(0,0,0);
-							
-							if(loading){
-								loading.hide();
-							}
 						})
 					},
 					error:function(xhr, errorType, error,msg){
-						if(loading){
-							loading.hide();
-						}
 						mui.alert(msg,'提示','确定',null,'div');
+						loading.hide();
 					}
 				})
+			},
+			search:function(){
+				var _this = this;
+				
 			},
 			toTop:function(){
 				mui('#scrollWrapper').scroll({
