@@ -8,7 +8,6 @@ $(function(){
 	    },
 	    mounted:function(){
 			this.init();
-			checkVersion();
 	    },
 	    methods:{
 			init:function(){
