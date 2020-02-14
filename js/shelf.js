@@ -134,8 +134,8 @@ $(function(){
 					item.func();
 				}
 			},
-			toIndex:function(){
-				window.location.href = 'index.html';
+			toShelf:function(){
+				window.location.href = 'shelf.html';
 			},
 			toSearch:function(){
 				window.location.href = 'search.html';
